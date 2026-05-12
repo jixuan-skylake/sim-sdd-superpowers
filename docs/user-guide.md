@@ -92,7 +92,18 @@ guardrail hook 会读取这些字段决定是否拦截编辑动作。
 
 配置文件不存在时使用插件默认值。
 
-## 6. 推荐用法
+## 6. 运行期网络要求
+
+安装之后的日常使用完全不依赖 GitHub：
+
+- 所有 Skill 都在 `<target>/.opencode/skills/` 下读取；
+- 所有 custom tool / hook 都在 `<target>/.opencode/plugins/sim-sdd-superpowers/` 下执行；
+- Python 脚本（`scripts/*.py`）只读写本机文件系统；
+- 工作状态写入业务项目下的 `.opencode/sim-sdd/state.json`。
+
+只要本机有可用的 Code CLI / OpenCode、Node 18+、Python 3.8+，即便机器永久断网或仅有内网也可以走完整流程。升级到新版本时才需要重新走 `docs/install.md` 第 6 节描述的离线分发流程。
+
+## 7. 推荐用法
 
 - 不要让模型“通读仓库再写代码”。每次新任务都从 `sim-sdd-intake` 开始。
 - 不要直接编辑 Skill 文件；项目层面想要差异化时使用 `project.json`。

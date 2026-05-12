@@ -16,9 +16,17 @@ python3 --version
 # 2. 运行全部验证
 npm run verify
 
-# 3. 安装到目标项目
+# 3. 安装到目标项目（任意本地路径，绝对/相对均可）
 node install.mjs --target /path/to/your/project
 ```
+
+> `--target` 可以指向任意本地业务项目目录，安装产物会写入 `<target>/.opencode/`。
+> 详见 [安装指南](docs/install.md) 第 0 节：路径要求与离线分发。
+
+## 常见问题
+
+- **安装时是否限定路径？** 不限。`--target` 接受任意绝对或相对路径，安装脚本只在 `<target>/.opencode/` 下写入文件，不会改动目标项目其它内容。
+- **公司不能通过 GitHub 账号下载怎么办？** 本仓库为 **public**，无需 GitHub 账号即可 `git clone` 或下载 ZIP；网络完全无法访问 github.com 时，可在外部机器下载 ZIP/tarball，通过内网制品库、共享盘或代码镜像把整个目录搬入内网，再运行 `node install.mjs`。安装与运行均不依赖 GitHub。
 
 ## 目录结构
 
