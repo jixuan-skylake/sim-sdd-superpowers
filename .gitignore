@@ -1,0 +1,37 @@
+# Node
+node_modules/
+npm-debug.log*
+yarn-error.log
+.pnpm-store/
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+
+# Temp / logs
+*.log
+/tmp/
+.tmp/
+
+# OpenCode install artifacts (target-project state, must not leak from plugin repo)
+.opencode/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Build outputs
+dist/
+build/
+coverage/
+
+# Env
+.env
+.env.*
+
+# Local session notes unrelated to the MVP
+AGENTS.md
