@@ -9,7 +9,7 @@
 ## 快速开始
 
 ```bash
-# 1. 仅需 Node 18+ 与 Python 3.8+，无第三方依赖
+# 1. 推荐具备 Node 18+ 与 Python 3.8+
 node --version
 python3 --version
 
@@ -20,17 +20,28 @@ npm run verify
 node install.mjs --target /path/to/your/project
 ```
 
+没有 Node 时，可以只用 Python 安装：
+
+```bash
+python3 install.py --target /path/to/your/project
+
+# 如果你手里已经是 .opencode 路径，也可以直接指定：
+python3 install.py --opencode-dir 99A_AI_Test/NinA_Module/.opencode
+```
+
 > `--target` 可以指向任意本地业务项目目录，安装产物会写入 `<target>/.opencode/`。
 > 详见 [安装指南](docs/install.md) 第 0 节：路径要求与离线分发。
 
 ## 常见问题
 
 - **安装时是否限定路径？** 不限。`--target` 接受任意绝对或相对路径，安装脚本只在 `<target>/.opencode/` 下写入文件，不会改动目标项目其它内容。
-- **公司不能通过 GitHub 账号下载怎么办？** 本仓库为 **public**，无需 GitHub 账号即可 `git clone` 或下载 ZIP；网络完全无法访问 github.com 时，可在外部机器下载 ZIP/tarball，通过内网制品库、共享盘或代码镜像把整个目录搬入内网，再运行 `node install.mjs`。安装与运行均不依赖 GitHub。
+- **机器没有 Node 怎么办？** 使用 `python3 install.py --target <业务项目根目录>`，或 `python3 install.py --opencode-dir <业务项目/.opencode>`。
+- **公司不能通过 GitHub 账号下载怎么办？** 本仓库为 **public**，无需 GitHub 账号即可 `git clone` 或下载 ZIP；网络完全无法访问 github.com 时，可在外部机器下载 ZIP/tarball，通过内网制品库、共享盘或代码镜像把整个目录搬入内网，再运行 `python3 install.py`。安装与运行均不依赖 GitHub。
 
 ## 目录结构
 
 - `src/`：OpenCode 插件入口、custom tools、hooks 骨架。
+- `install.py`：无 Node 环境可用的 Python 安装器。
 - `scripts/`：Spec 契约抽取、相似模块检索、context pack、trace 摘要、handoff 等确定性 Python 脚本。
 - `skills/`：八个面向弱模型友好的 Skill（英文 frontmatter 与硬约束）。
 - `templates/`：context pack / implementation plan / review report / handoff 模板。

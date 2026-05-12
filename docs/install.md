@@ -5,15 +5,16 @@
 ## 0. 路径与网络说明（必读）
 
 - **`--target` 不限路径**：可以是任意本地目录，绝对路径（`/path/to/proj`）或相对路径（`../my-sim`）均可。安装脚本只在 `<target>/.opencode/` 下创建/写入文件，不会动 `<target>` 的其他内容。
-- **路径前提**：所在磁盘可写、Node 与 Python 已在该机器上可用即可。无需 GitHub 登录，无需 sudo。
+- **已有 `.opencode` 路径时**：使用 Python 安装器的 `--opencode-dir`，例如 `python3 install.py --opencode-dir 99A_AI_Test/NinA_Module/.opencode`。
+- **路径前提**：所在磁盘可写即可。`install.py` 只需要 Python 3.8+；`install.mjs` 和 `npm run verify` 需要 Node 18+。
 - **不要把本仓库自己的 `.opencode/` 当成业务项目**：除非你只是想自测，否则请把 `--target` 指向真正的业务仓库根目录。
 - **GitHub 访问**：本仓库是 public 仓库，公司机器只要能访问 `github.com` 就可以匿名 `git clone`、`gh repo clone` 或直接下载 ZIP，不需要 GitHub 账号、SSO 或个人 token。
 - **完全无 GitHub 网络**：参见第 6 节「离线分发」。安装后运行时也不再依赖 GitHub。
 
 ## 1. 前置依赖
 
-- Node 18+（用于运行 `install.mjs` 和测试）
-- Python 3.8+（用于运行确定性脚本）
+- Python 3.8+（用于运行 `install.py` 和确定性脚本）
+- Node 18+（可选，用于运行 `install.mjs`、`npm run verify` 和 Node 测试）
 - OpenCode / Code CLI 已安装
 
 可选：
@@ -28,16 +29,28 @@ git clone https://github.com/jixuan-skylake/sim-sdd-superpowers.git
 # 或：git clone git@github.com:jixuan-skylake/sim-sdd-superpowers.git
 cd sim-sdd-superpowers
 
-# 2. 运行本地验证
+# 2. 运行本地验证（需要 Node）
 npm run verify
 
-# 3. 安装到目标项目（任意本地路径）
+# 3A. 有 Node 时安装到目标项目（任意本地路径）
 node install.mjs --target /absolute/path/to/your-project
 # 也支持相对路径，例如：
 # node install.mjs --target ../my-sim
+
+# 3B. 没有 Node 时用 Python 安装
+python3 install.py --target /absolute/path/to/your-project
+# 也支持相对路径，例如：
+# python3 install.py --target ../my-sim
+
+# 3C. 如果你已经拿到 .opencode 路径，直接安装到该目录
+python3 install.py --opencode-dir 99A_AI_Test/NinA_Module/.opencode
+
+# 3D. 可选：安装到全局 ~/.opencode
+python3 install.py --global
 ```
 
 `--target` 解析为绝对路径后写入 `<target>/.opencode/`，对该路径之外的文件不做任何修改。
+`--opencode-dir` 则把参数当成最终 `.opencode` 目录，不会再追加一层 `.opencode`。
 
 安装脚本会做：
 
@@ -63,6 +76,7 @@ node install.mjs --target /absolute/path/to/your-project
   plugins/
     sim-sdd-superpowers/
       package.json
+      install.py
       src/
       scripts/
       templates/
@@ -112,7 +126,7 @@ Use sim-sdd-intake for fixtures/tiny-sim/specs/timer_compare.md. Target: impleme
 
 ## 6. 离线 / 内网分发（无法访问 GitHub）
 
-如果团队所在机器完全不能访问 `github.com`，安装与运行本插件仍然可以做到，因为它们**只依赖本地文件 + Node + Python**，安装完成后不会再回连任何外部网络。
+如果团队所在机器完全不能访问 `github.com`，安装与运行本插件仍然可以做到，因为它们**只依赖本地文件 + Python**；Node 只在运行验证或 Node 安装器时需要。安装完成后不会再回连任何外部网络。
 
 ### 6.1 一次性下载，多次内网分发
 
@@ -122,13 +136,13 @@ Use sim-sdd-intake for fixtures/tiny-sim/specs/timer_compare.md. Target: impleme
 # 方案 A：git clone 后打 tarball
 git clone https://github.com/jixuan-skylake/sim-sdd-superpowers.git
 cd sim-sdd-superpowers
-git checkout v0.1.0          # 锁定试点版本
+git checkout v0.1.1          # 锁定包含 Python 安装器的试点版本
 cd ..
-tar czf sim-sdd-superpowers-v0.1.0.tar.gz sim-sdd-superpowers
+tar czf sim-sdd-superpowers-v0.1.1.tar.gz sim-sdd-superpowers
 
 # 方案 B：直接下载 ZIP（无需 git）
-curl -L -o sim-sdd-superpowers-v0.1.0.zip \
-  https://github.com/jixuan-skylake/sim-sdd-superpowers/archive/refs/tags/v0.1.0.zip
+curl -L -o sim-sdd-superpowers-v0.1.1.zip \
+  https://github.com/jixuan-skylake/sim-sdd-superpowers/archive/refs/tags/v0.1.1.zip
 ```
 
 把得到的 `tar.gz` / `zip` 通过以下任一通道送入内网：
@@ -142,23 +156,26 @@ curl -L -o sim-sdd-superpowers-v0.1.0.zip \
 
 ```bash
 # 解压
-tar xzf sim-sdd-superpowers-v0.1.0.tar.gz
-# 或：unzip sim-sdd-superpowers-v0.1.0.zip
+tar xzf sim-sdd-superpowers-v0.1.1.tar.gz
+# 或：unzip sim-sdd-superpowers-v0.1.1.zip
 
 cd sim-sdd-superpowers
 
-# 自检（仅依赖本机 Node / Python，不联网）
+# 可选自检（需要 Node；不联网）
 npm run verify
 
-# 安装到任意本地业务项目
-node install.mjs --target /path/to/your-sim-project
+# 安装到任意本地业务项目（只需要 Python）
+python3 install.py --target /path/to/your-sim-project
+
+# 或直接安装到现有 .opencode 目录
+python3 install.py --opencode-dir 99A_AI_Test/NinA_Module/.opencode
 ```
 
-`npm run verify` 与 `node install.mjs` 都不会发起任何对外网络请求。
+`npm run verify`、`node install.mjs` 与 `python3 install.py` 都不会发起任何对外网络请求。没有 Node 时可以跳过 `npm run verify`，直接用 `python3 install.py` 安装，再用 `ls <target>/.opencode/skills` 检查目录是否写入。
 
 ### 6.3 升级流程
 
-每次有新版本时，重复 6.1 步骤拿到新的 tarball/zip，分发到内网，覆盖旧目录或并存（推荐保留 `vX.Y.Z` 目录名以便回滚），重新跑 `node install.mjs --target ...` 即可。建议业务项目同时提交本次使用的 tag/commit hash 到 README，方便追溯。
+每次有新版本时，重复 6.1 步骤拿到新的 tarball/zip，分发到内网，覆盖旧目录或并存（推荐保留 `vX.Y.Z` 目录名以便回滚），重新跑 `python3 install.py --target ...` 或 `node install.mjs --target ...` 即可。建议业务项目同时提交本次使用的 tag/commit hash 到 README，方便追溯。
 
 ### 6.4 运行期是否依赖 GitHub？
 
@@ -167,7 +184,8 @@ node install.mjs --target /path/to/your-sim-project
 - 业务项目本地的 `<target>/.opencode/skills/`；
 - 业务项目本地的 `<target>/.opencode/plugins/sim-sdd-superpowers/`；
 - 公司 Code CLI / OpenCode 已具备的本地运行环境；
-- 本机 Python 3 与 Node 18+。
+- 本机 Python 3.8+；
+- Node 18+ 仅在你要运行 `npm run verify` 或使用 Node 安装器时需要。
 
 因此即便业务机器永久断网或仅有内网，使用过程也不受影响。仅升级版本时才需要再次走 6.1 的离线分发流程。
 

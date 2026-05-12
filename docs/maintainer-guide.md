@@ -11,6 +11,7 @@
 - `fixtures/tiny-sim/`：用于自测和示范。
 - `docs/`：所有中文文档。
 - `tests/`：Node 内建 `node:test`。
+- `install.py` / `install.mjs`：分别用于 Python-only 安装与 Node 安装。
 
 ## 2. 开发流程
 
@@ -50,6 +51,6 @@
 
 ## 7. 已知坑
 
-- macOS 上 `cp -R` 与 `node:fs/promises` 的 `cp` 行为略有差异，安装脚本依赖后者；
+- macOS 上 `cp -R` 与 `node:fs/promises` 的 `cp` 行为略有差异，Node 安装脚本依赖后者；无 Node 环境优先使用 `install.py`；
 - Python 3.9 的 `argparse` 在某些 stdlib 版本上对 `--help` 的退出码为 0，已经覆盖在 verify 中。
 - OpenCode SDK 的 hook 名以 `experimental.` 开头时可能在不同版本有差异，src/index.js 已写成字符串键以便后续映射。

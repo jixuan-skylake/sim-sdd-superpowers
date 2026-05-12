@@ -24,11 +24,11 @@
   - `scripts/extract_spec_contract.py`
   - `scripts/find_similar_modules.py`
   - `scripts/build_context_pack.py`
-- 安装脚本 `install.mjs`，把 Skill 拷贝到 `<target>/.opencode/skills/`，并维护 `.opencode/package.json`。
+- 安装脚本 `install.py` / `install.mjs`，把 Skill 拷贝到 `<target>/.opencode/skills/`，并维护 `.opencode/package.json`。
 - 测试夹具 `fixtures/tiny-sim/`，包含 timer 模块 Spec、源码、测试占位。
 - 四个 Markdown 模板：context pack、implementation plan、review report、handoff。
 - 中文文档：安装、使用、维护、团队推广、OpenCode 兼容性。
-- Node `node:test` 套件：package shape、spec contract、context pack pipeline、skill metadata、plugin shape、installer，共 9 项断言全部绿色。
+- Node `node:test` 套件：package shape、spec contract、context pack pipeline、skill metadata、plugin shape、Node/Python installer，全部绿色。
 
 ## 2. 如何安装
 
@@ -37,6 +37,10 @@ git clone <internal-or-github-url> sim-sdd-superpowers
 cd sim-sdd-superpowers
 npm run verify
 node install.mjs --target /path/to/your-project
+# 没有 Node 时：
+python3 install.py --target /path/to/your-project
+# 已有 .opencode 路径时：
+python3 install.py --opencode-dir /path/to/your-project/.opencode
 ```
 
 详见 `docs/install.md`。

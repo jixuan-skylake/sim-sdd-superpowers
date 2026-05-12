@@ -1,6 +1,6 @@
 {
   "name": "sim-sdd-superpowers",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "OpenCode Skills and plugin tools for C chip-simulation SDD workflows.",
   "type": "module",
   "main": "src/index.js",

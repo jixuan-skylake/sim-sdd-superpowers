@@ -101,7 +101,7 @@ guardrail hook 会读取这些字段决定是否拦截编辑动作。
 - Python 脚本（`scripts/*.py`）只读写本机文件系统；
 - 工作状态写入业务项目下的 `.opencode/sim-sdd/state.json`。
 
-只要本机有可用的 Code CLI / OpenCode、Node 18+、Python 3.8+，即便机器永久断网或仅有内网也可以走完整流程。升级到新版本时才需要重新走 `docs/install.md` 第 6 节描述的离线分发流程。
+安装动作可只依赖 Python：没有 Node 时用 `python3 install.py --target <业务项目根目录>`，或 `python3 install.py --opencode-dir <业务项目/.opencode>`。只要本机有可用的 Code CLI / OpenCode 与 Python 3.8+，即便机器永久断网或仅有内网也可以走完整流程。Node 只在运行 `npm run verify` 或 Node 安装器时需要。升级到新版本时才需要重新走 `docs/install.md` 第 6 节描述的离线分发流程。
 
 ## 7. 推荐用法
 

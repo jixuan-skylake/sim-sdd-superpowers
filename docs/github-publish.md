@@ -34,8 +34,8 @@ git push -u origin main
 建议每次给团队试点版本打 tag：
 
 ```bash
-git tag v0.1.0
-git push origin v0.1.0
+git tag v0.1.1
+git push origin v0.1.1
 ```
 
 业务项目可以记录使用的插件 tag，方便回滚。
@@ -52,7 +52,16 @@ npm run verify
 node install.mjs --target /path/to/company-sim-project
 ```
 
+没有 Node 的机器可跳过 `npm run verify`，改用 Python 安装器：
+
+```bash
+python3 install.py --target /path/to/company-sim-project
+# 或直接写入现有 .opencode 目录：
+python3 install.py --opencode-dir 99A_AI_Test/NinA_Module/.opencode
+```
+
 `--target` 接受任意本地路径（绝对或相对均可），安装产物只写入 `<target>/.opencode/`。
+`--opencode-dir` 接受最终 `.opencode` 目录，不会追加嵌套 `.opencode`。
 
 ### 4.2 完全无法访问 github.com（离线分发）
 
@@ -61,12 +70,12 @@ node install.mjs --target /path/to/company-sim-project
 ```bash
 # 方案 A：git clone 后打 tarball
 git clone https://github.com/jixuan-skylake/sim-sdd-superpowers.git
-cd sim-sdd-superpowers && git checkout v0.1.0 && cd ..
-tar czf sim-sdd-superpowers-v0.1.0.tar.gz sim-sdd-superpowers
+cd sim-sdd-superpowers && git checkout v0.1.1 && cd ..
+tar czf sim-sdd-superpowers-v0.1.1.tar.gz sim-sdd-superpowers
 
 # 方案 B：直接拉 ZIP（不需要 git）
-curl -L -o sim-sdd-superpowers-v0.1.0.zip \
-  https://github.com/jixuan-skylake/sim-sdd-superpowers/archive/refs/tags/v0.1.0.zip
+curl -L -o sim-sdd-superpowers-v0.1.1.zip \
+  https://github.com/jixuan-skylake/sim-sdd-superpowers/archive/refs/tags/v0.1.1.zip
 ```
 
 把得到的压缩包通过下列任一通道送入内网：
@@ -79,17 +88,17 @@ curl -L -o sim-sdd-superpowers-v0.1.0.zip \
 内网机器：
 
 ```bash
-tar xzf sim-sdd-superpowers-v0.1.0.tar.gz   # 或 unzip ZIP
+tar xzf sim-sdd-superpowers-v0.1.1.tar.gz   # 或 unzip ZIP
 cd sim-sdd-superpowers
-npm run verify                              # 仅依赖本机 Node + Python，不联网
-node install.mjs --target /path/to/your-sim-project
+npm run verify                              # 可选，需要 Node；不联网
+python3 install.py --target /path/to/your-sim-project
 ```
 
 详细步骤见 `docs/install.md` 第 6 节。
 
 ### 4.3 运行期网络要求
 
-安装完成后，业务项目运行 SimSDD 流程不再依赖 GitHub，所有逻辑都跑在 `<target>/.opencode/skills/` 与 `<target>/.opencode/plugins/sim-sdd-superpowers/` 之下，外加本机的 Code CLI / OpenCode 与 Python/Node 运行时。即便业务机器永久断网也能正常使用。
+安装完成后，业务项目运行 SimSDD 流程不再依赖 GitHub，所有逻辑都跑在 `<target>/.opencode/skills/` 与 `<target>/.opencode/plugins/sim-sdd-superpowers/` 之下，外加本机的 Code CLI / OpenCode 与 Python 运行时。Node 只在运行 `npm run verify` 或 Node 安装器时需要。即便业务机器永久断网也能正常使用。
 
 安装后进入业务项目，启动公司 Code CLI / OpenCode，并输入：
 
@@ -115,8 +124,7 @@ cd sim-sdd-superpowers
 git fetch --tags
 git checkout v0.1.1
 npm run verify
-node install.mjs --target /path/to/company-sim-project
+python3 install.py --target /path/to/company-sim-project
 ```
 
 再在业务项目中提交 `.opencode/` 变更。
-

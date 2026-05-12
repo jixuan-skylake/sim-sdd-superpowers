@@ -41,6 +41,7 @@ async function main() {
   await cp(join(root, 'package.json'), join(pluginsDir, 'package.json'), { force: true });
   await cp(join(root, 'README.md'), join(pluginsDir, 'README.md'), { force: true });
   await cp(join(root, 'install.mjs'), join(pluginsDir, 'install.mjs'), { force: true });
+  await cp(join(root, 'install.py'), join(pluginsDir, 'install.py'), { force: true });
 
   const pkg = await readJsonIfExists(packagePath, {
     private: true,
